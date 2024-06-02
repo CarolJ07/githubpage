@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bioconect - Inicio de Sesión</title>
     <style>
-        /* Estilos Generales */
         body {
             font-family: 'Arial', sans-serif;
             background: linear-gradient(to right, #002f4b, #005c97);
@@ -16,19 +15,28 @@
             height: 100vh;
             margin: 0;
         }
-
+        .container {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            max-width: 400px;
+            width: 100%;
+            margin: 10px;
+            max-height: 80vh; /* Limitar la altura máxima para permitir el desplazamiento */
+            overflow-y: auto; /* Habilitar desplazamiento vertical */
+        }
         h1 {
             text-align: center;
+            margin-bottom: 20px;
         }
-
-        input[type="text"], input[type="password"], textarea {
+        input[type="text"], input[type="password"], input[type="date"], textarea, input[type="file"] {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
             border: none;
             border-radius: 5px;
         }
-
         button {
             width: 100%;
             padding: 10px;
@@ -38,274 +46,306 @@
             color: white;
             font-size: 16px;
             cursor: pointer;
+            margin: 10px 0;
         }
-
         button:hover {
             background-color: #004080;
         }
-
-        .back-button {
-            margin-top: 10px;
-            background-color: #ff4b4b;
-        }
-
-        .back-button:hover {
-            background-color: #cc0000;
-        }
-
-        /* Barra de Notificaciones */
-        .notification-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background-color: #ff9800;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            display: none;
-        }
-
-        /* Contenedor */
-        .container {
-            background-color: rgba(255, 255, 255, 0.2);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            display: none;
-        }
-
-        .login-container {
-            display: block;
-        }
-
-        /* Botones */
         .area-buttons, .equipos-buttons, .marcas-buttons {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
+            margin: 10px 0;
         }
-
         .area-buttons button, .equipos-buttons button, .marcas-buttons button {
             flex: 1 1 30%;
+        }
+        .back-button {
+            background-color: #004080;
+            margin-top: 10px;
+        }
+        #imagen-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        #imagen-preview {
+            max-width: 200px;
+            max-height: 200px;
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="notification-bar" id="notification-bar"></div><div class="notification-bar" id="notification-bar">
-        <div>Barra de Notificaciones</div>
-        <button onclick="mostrarNotificaciones()">🔔</button>
-    </div>
-
-    <div class="container login-container" id="login-container">
+    <div class="container" id="login-container">
         <h1>Bioconect</h1>
         <input type="text" id="username" placeholder="Usuario">
         <input type="password" id="password" placeholder="Contraseña">
         <button onclick="iniciarSesion()">Iniciar Sesión</button>
     </div>
 
-    <div class="container area-container" id="area-container">
+    <div class="container" id="area-container">
         <h1>Áreas del Hospital</h1>
-        <div class="area-buttons">
+        <div class="area-buttons" id="area-buttons">
             <button onclick="mostrarEquipos('Emergencia')">Emergencia</button>
             <button onclick="mostrarEquipos('UCI')">UCI</button>
             <button onclick="mostrarEquipos('Ginecología')">Ginecología</button>
             <button onclick="mostrarEquipos('Diálisis')">Diálisis</button>
-            <button onclick="mostrarEquipos('Cirugia')">Cirugia</button>
-            <button onclick="mostrarEquipos('Pediatría')">Pediatría</button>
-            <button onclick="mostrarEquipos('Cardiología')">Cardiología</button>
-            <button onclick="mostrarEquipos('Oncología')">Oncología</button>
-            <button onclick="mostrarEquipos('Radiología')">Radiología</button>
-            <button onclick="mostrarEquipos('Laboratorio Clinico')">Laboratorio Clinico</button>
+            <!-- Añadir más áreas según sea necesario -->
         </div>
-        <button class="back-button" onclick="volver('login-container')">Regresar</button>
+        <button class="back-button" onclick="volverLogin()">Volver al inicio</button>
+        <button class="back-button" onclick="agregarArea()">Agregar Área</button>
+        <button class="back-button" onclick="eliminarArea()">Eliminar Área</button>
     </div>
 
-    <div class="container equipos-container" id="equipos-container">
+    <div class="container" id="equipos-container">
         <h1 id="equipos-titulo"></h1>
-        <div class="equipos-buttons">
-            <button onclick="mostrarMarcas('Monitor de signos vitales')">Monitor de signos vitales</button>
-            <button onclick="mostrarMarcas('Desfibrilador')">Desfibrilador</button>
-            <button onclick="mostrarMarcas('Ventilador Mecanico')">Ventilador Mecanico</button>
-            <button onclick="mostrarMarcas('Bombas de infusion')">Bombas de infusion</button>
-            <button onclick="mostrarMarcas('Glucometro')">Glucómetro</button>
-            <button onclick="agregarEquipo()">Agregar Equipo</button>
+        <div class="equipos-buttons" id="equipos-buttons">
+            <!-- Aquí se agregarán los botones de los equipos dinámicamente -->
         </div>
-        <button class="back-button" onclick="volver('area-container')">Regresar</button>
+        <button class="back-button" onclick="volverArea()">Volver a Áreas</button>
+        <button class="back-button" onclick="agregarEquipo()">Agregar Equipo</button>
+        <button class="back-button" onclick="eliminarEquipo()">Eliminar Equipo</button>
     </div>
 
-    <div class="container detalles-container" id="detalles-container">
+    <div class="container" id="detalles-container">
         <h1 id="detalles-titulo"></h1>
-        <div class="marcas-buttons">
-            <button onclick="mostrarDetalles('Mindray', '2020')">Mindray- 2020</button>
-            <button onclick="mostrarDetalles('Wekch Allyn', '2021')">Wekch Allyn - 2021</button>
-            <button onclick="mostrarDetalles('Philips', '2022')">Philips- 2022</button>
+        <div id="detalles-info" style="margin-top: 20px;">
+            <!-- Aquí se mostrarán los detalles del equipo seleccionado -->
         </div>
-        <div id="detalles-info" style="margin-top: 20px;"></div>
-        <button class="back-button" onclick="volver('equipos-container')">Regresar</button>
+        <div id="imagen-container">
+            <img id="imagen-preview" src="#" alt="Vista previa de la imagen">
+        </div>
+        <button class="back-button" onclick="volverEquipos()">Volver a Equipos</button>
     </div>
 
     <script>
-        let authenticated = false;
-        let currentUser = null;
-        let equipos = ['Monitor de signos vitales', 'Desfibrilador', 'Ventilador Mecánico', 'Bombas de infusión', 'Glucómetro'];
-
-        // Credenciales permitidas
-        const usuariosPermitidos = {
-            'usuario1': 'password1',
-            'usuario2': 'password2',
+        const containers = {
+            login: document.getElementById('login-container'),
+            area: document.getElementById('area-container'),
+            equipos: document.getElementById('equipos-container'),
+            detalles: document.getElementById('detalles-container')
         };
+
+        function showContainer(containerName) {
+            Object.values(containers).forEach(container => container.style.display = 'none');
+            containers[containerName].style.display = 'block';
+            localStorage.setItem('currentContainer', containerName);
+        }
 
         function iniciarSesion() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-
-            if (usuariosPermitidos[username] && usuariosPermitidos[username] === password) {
-                authenticated = true;
-                currentUser = username;
-                manejarRedireccion();
-                mostrarSeccion('login-container', 'area-container'); // Mostrar la siguiente sección
+            // Aquí agregar lógica de autenticación
+            if (username && password) {
+                showContainer('area');
             } else {
-                alert('Usuario o contraseña incorrectos');
-            }
-        }
-
-        function manejarRedireccion() {
-            const path = window.location.pathname.split('/');
-            if (authenticated) {
-                if (path[1] === 'areas') {
-                    if (path.length === 2) {
-                        mostrarSeccion('login-container', 'area-container');
-                    } else if (path.length === 3) {
-                        document.getElementById('equipos-titulo').textContent = path[2].charAt(0).toUpperCase() + path[2].slice(1);
-                        mostrarSeccion('area-container', 'equipos-container');
-                    } else if (path.length === 4) {
-                        document.getElementById('equipos-titulo').textContent = path[2].charAt(0).toUpperCase() + path[2].slice(1);
-                        document.getElementById('detalles-titulo').textContent = path[3].charAt(0).toUpperCase() + path[3].slice(1);
-                        mostrarSeccion('equipos-container', 'detalles-container');
-                    }
-                } else {
-                    mostrarSeccion('login-container', 'area-container');
-                }
-            } else {
-                mostrarSeccion('login-container', 'login-container');
+                alert('Por favor, ingrese usuario y contraseña');
             }
         }
 
         function mostrarEquipos(area) {
             document.getElementById('equipos-titulo').textContent = area;
-            mostrarSeccion('area-container', 'equipos-container');
-            history.pushState({ page: 'equipos', area: area }, 'Equipos', '/areas/' + area.toLowerCase());
+            showContainer('equipos');
+            localStorage.setItem('areaActual', area);
+            cargarEquipos(area);
         }
 
         function mostrarMarcas(equipo) {
-            document.getElementById('detalles-titulo').textContent = equipo;
-            mostrarSeccion('equipos-container', 'detalles-container');
-            history.pushState({ page: 'detalles', equipo: equipo }, 'Detalles', '/areas/' + document.getElementById('equipos-titulo').textContent.toLowerCase() + '/' + equipo.toLowerCase());
+            const area = localStorage.getItem('areaActual');
+            document.getElementById('detalles-titulo').textContent = `${area} - ${equipo}`;
+            showContainer('detalles');
+            localStorage.setItem('equipoActual', equipo);
+            mostrarDetalles();
         }
 
-        function mostrarDetalles(marca, año) {
+        function mostrarDetalles() {
+            const area = localStorage.getItem('areaActual');
+            const equipo = localStorage.getItem('equipoActual');
+            const detallesKey = `${area}-${equipo}`;
+            const detalles = JSON.parse(localStorage.getItem(detallesKey)) || {
+                modelo: '',
+                numeroSerie: '',
+                marca: '',
+                fechaAdquisicion: '',
+                vidaUtil: '',
+                inicioOperaciones: '',
+                ultimaCalibracion: '',
+                responsable: '',
+                comentarios: ''
+            };
             const detallesInfo = `
-                <h2>${marca} - ${año}</h2>
-                <p>Marca: ${marca}</p>
-                <p>Año de Ingreso: ${año}</p>
-                <p>Número de Serie: XXXXXX</p>
+                <label>Modelo:</label>
+                <input type="text" id="modelo" value="${detalles.modelo}">
+                <label>Número de Serie:</label>
+                <input type="text" id="numeroSerie" value="${detalles.numeroSerie}">
+                <label>Marca:</label>
+                <input type="text" id="marca" value="${detalles.marca}">
+                <label>Fecha de Adquisición:</label>
+                <input type="date" id="fechaAdquisicion" value="${detalles.fechaAdquisicion}">
+                <label>Vida Útil:</label>
+                <input type="text" id="vidaUtil" value="${detalles.vidaUtil}">
+                <label>Fecha de Inicio de Operaciones:</label>
+                <input type="date" id="inicioOperaciones" value="${detalles.inicioOperaciones}">
+                <label>Última Fecha de Calibración:</label>
+                <input type="date" id="ultimaCalibracion" value="${detalles.ultimaCalibracion}">
+                <label>Responsable del Mantenimiento:</label>
+                <input type="text" id="responsable" value="${detalles.responsable}">
                 <label>Foto del Equipo:</label><br>
-                <input type="file" accept="image/*"><br>
+                <input type="file" accept="image/*" onchange="cargarImagen(event)"><br>
                 <label>Comentarios:</label><br>
-                <textarea rows="4" id="comentario" placeholder="Ingrese sus comentarios aquí"></textarea>
-                <button onclick="enviarComentario('${marca}', '${año}')">Enviar Comentario</button>
+                <textarea rows="4" id="comentarios" placeholder="Ingrese sus comentarios aquí">${detalles.comentarios || ''}</textarea>
+                <button onclick="guardarDetalles()">Guardar</button>
             `;
             document.getElementById('detalles-info').innerHTML = detallesInfo;
+            cargarImagenGuardada(detallesKey);
         }
-        function agregarEquipo() {
-    const nuevoEquipo = prompt("Ingrese el nombre del nuevo equipo:");
-    if (nuevoEquipo) {
-        equipos.push(nuevoEquipo);
-        mostrarEquiposActuales();
-    }
-}
 
-function mostrarEquiposActuales() {
-    const equiposContainer = document.getElementById('equipos-buttons');
-    equiposContainer.innerHTML = ''; // Limpiar contenido actual
-    equipos.forEach(equipo => {
-        const button = document.createElement('button');
-        button.textContent = equipo;
-        button.onclick = function() {
-            mostrarMarcas(equipo);
-        };
-        equiposContainer.appendChild(button);
-    });
-}
+        function cargarImagen(event) {
+            const input = event.target;
+            const reader = new FileReader();
+            reader.onload = function() {
+                const dataURL = reader.result;
+                const imagenPreview = document.getElementById('imagen-preview');
+                imagenPreview.src = dataURL;
+                imagenPreview.style.display = 'block';
+                const area = localStorage.getItem('areaActual');
+                const equipo = localStorage.getItem('equipoActual');
+                const detallesKey = `${area}-${equipo}`;
+                localStorage.setItem(`imagen-${detallesKey}`, dataURL);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
 
-function mostrarBotonAgregarEquipos() {
-    const botonAgregar = document.createElement('button');
-    botonAgregar.textContent = 'Agregar Más';
-    botonAgregar.onclick = agregarEquipo;
-    document.getElementById('equipos-container').appendChild(botonAgregar);
-}
-
-        function enviarComentario(marca, año) {
-            const comentario = document.getElementById('comentario').value;
-            if (!comentario) {
-                alert('Por favor, ingrese un comentario.');
-                return;
-            }
-            
-            // Simulación de envío de comentario y notificación
-            console.log(`Comentario enviado: ${marca} (${año}) - ${comentario}`);
-            alert('Comentario enviado con éxito.');
-            
-            if (currentUser === 'usuario1') {
-                mostrarNotificacion(`Nuevo comentario en ${marca} (${año}): ${comentario}`);
+        function cargarImagenGuardada(detallesKey) {
+            const imagen = localStorage.getItem(`imagen-${detallesKey}`);
+            if (imagen) {
+                const imagenPreview = document.getElementById('imagen-preview');
+                imagenPreview.src = imagen;
+                imagenPreview.style.display = 'block';
             }
         }
 
-        function mostrarNotificacion(mensaje) {
-            if (currentUser === 'usuario2') {
-                const notificationBar = document.getElementById('notification-bar');
-                notificationBar.textContent = mensaje;
-                notificationBar.style.display = 'block';
-                setTimeout(() => {
-                    notificationBar.style.display = 'none';
-                }, 5000);
+        function guardarDetalles() {
+            const area = localStorage.getItem('areaActual');
+            const equipo = localStorage.getItem('equipoActual');
+            const detallesKey = `${area}-${equipo}`;
+            const detalles = {
+                modelo: document.getElementById('modelo').value,
+                numeroSerie: document.getElementById('numeroSerie').value,
+                marca: document.getElementById('marca').value,
+                fechaAdquisicion: document.getElementById('fechaAdquisicion').value,
+                vidaUtil: document.getElementById('vidaUtil').value,
+                inicioOperaciones: document.getElementById('inicioOperaciones').value,
+                ultimaCalibracion: document.getElementById('ultimaCalibracion').value,
+                responsable: document.getElementById('responsable').value,
+                comentarios: document.getElementById('comentarios').value
+            };
+            localStorage.setItem(detallesKey, JSON.stringify(detalles));
+            alert('Detalles guardados exitosamente');
+        }
+
+        function volverLogin() {
+            showContainer('login');
+            localStorage.removeItem('areaActual');
+            localStorage.removeItem('equipoActual');
+        }
+
+        function volverArea() {
+            showContainer('area');
+        }
+
+        function volverEquipos() {
+            showContainer('equipos');
+        }
+
+        function agregarArea() {
+            const nuevaArea = prompt('Ingrese el nombre de la nueva área:');
+            if (nuevaArea) {
+                const areaButtons = document.getElementById('area-buttons');
+                const button = document.createElement('button');
+                button.textContent = nuevaArea;
+                button.onclick = () => mostrarEquipos(nuevaArea);
+                areaButtons.appendChild(button);
             }
         }
 
-        function mostrarSeccion(actual, siguiente) {
-            document.getElementById(actual).style.display = 'none';
-            document.getElementById(siguiente).style.display = 'block';
-        }
-
-        function volver(anterior) {
-            const secciones = document.querySelectorAll('.container');
-            secciones.forEach(seccion => seccion.style.display = 'none');
-            document.getElementById(anterior).style.display = 'block';
-            history.back();
-        }
-
-        window.onpopstate = function(event) {
-            if (event.state) {
-                switch (event.state.page) {
-                    case 'area':
-                        mostrarSeccion('login-container', 'area-container');
+        function eliminarArea() {
+            const areaAEliminar = prompt('Ingrese el nombre de la área a eliminar:');
+            if (areaAEliminar) {
+                const areaButtons = document.getElementById('area-buttons');
+                const buttons = areaButtons.getElementsByTagName('button');
+                for (let i = 0; i < buttons.length; i++) {
+                    if (buttons[i].textContent === areaAEliminar) {
+                        areaButtons.removeChild(buttons[i]);
                         break;
-                    case 'equipos':
-                        document.getElementById('equipos-titulo').textContent = event.state.area;
-                        mostrarSeccion('area-container', 'equipos-container');
-                        break;
-                    case 'detalles':
-                        document.getElementById('detalles-titulo').textContent = event.state.equipo;
-                        mostrarSeccion('equipos-container', 'detalles-container');
-                        break;
+                    }
                 }
-            } else {
-                mostrarSeccion('area-container', 'login-container');
             }
         }
 
-        window.onload = manejarRedireccion;
+        function cargarEquipos(area) {
+            const equiposButtons = document.getElementById('equipos-buttons');
+            equiposButtons.innerHTML = ''; // Limpiar botones existentes
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith(`${area}-`) && !key.startsWith(`imagen-`)) {
+                    const equipo = key.split('-')[1];
+                    const button = document.createElement('button');
+                    button.textContent = equipo;
+                    button.onclick = () => mostrarMarcas(equipo);
+                    equiposButtons.appendChild(button);
+                }
+            }
+        }
+
+        function agregarEquipo() {
+            const nuevoEquipo = prompt('Ingrese el nombre del nuevo equipo:');
+            if (nuevoEquipo) {
+                const area = localStorage.getItem('areaActual');
+                const equiposButtons = document.getElementById('equipos-buttons');
+                const button = document.createElement('button');
+                button.textContent = nuevoEquipo;
+                button.onclick = () => mostrarMarcas(nuevoEquipo);
+                equiposButtons.appendChild(button);
+                // Crear una entrada vacía en localStorage para el nuevo equipo
+                const detallesKey = `${area}-${nuevoEquipo}`;
+                localStorage.setItem(detallesKey, JSON.stringify({
+                    modelo: '',
+                    numeroSerie: '',
+                    marca: '',
+                    fechaAdquisicion: '',
+                    vidaUtil: '',
+                    inicioOperaciones: '',
+                    ultimaCalibracion: '',
+                    responsable: '',
+                    comentarios: ''
+                }));
+            }
+        }
+
+        function eliminarEquipo() {
+            const equipoAEliminar = prompt('Ingrese el nombre del equipo a eliminar:');
+            if (equipoAEliminar) {
+                const area = localStorage.getItem('areaActual');
+                const equiposButtons = document.getElementById('equipos-buttons');
+                const buttons = equiposButtons.getElementsByTagName('button');
+                for (let i = 0; i < buttons.length; i++) {
+                    if (buttons[i].textContent === equipoAEliminar) {
+                        equiposButtons.removeChild(buttons[i]);
+                        const detallesKey = `${area}-${equipoAEliminar}`;
+                        localStorage.removeItem(detallesKey);
+                        localStorage.removeItem(`imagen-${detallesKey}`);
+                        break;
+                    }
+                }
+            }
+        }
+
+        window.onload = function() {
+            const currentContainer = localStorage.getItem('currentContainer') || 'login';
+            showContainer(currentContainer);
+        };
     </script>
 </body>
 </html>
+
